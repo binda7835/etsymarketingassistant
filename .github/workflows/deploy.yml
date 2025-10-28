@@ -35,6 +35,11 @@ jobs:
         run: npm run build
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Optional: set a tokenless public AI endpoint for free usage (Option A)
+          # Example: https://huggingface.co/spaces/USER/SPACE/api/predict
+          VITE_PUBLIC_AI_URL: ${{ secrets.PUBLIC_AI_URL }}
+          # Optional: if you host a proxy elsewhere, you can pass a URL the app can call
+          VITE_PROXY_URL: ${{ secrets.PROXY_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

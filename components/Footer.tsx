@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageView } from '../types';
+import AdSlot from './common/AdSlot';
 
 interface FooterProps {
     navigateToPage: (page: PageView) => void;
@@ -39,6 +40,7 @@ const Footer: React.FC<FooterProps> = ({ navigateToPage }) => {
                         </div>
                     </div>
                 </div>
+                <AdSlot />
                 <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500">
                     <p>&copy; {new Date().getFullYear()} Etsy Marketing Assistant. All Rights Reserved.</p>
                     <p className="text-xs mt-2">Disclaimer: This website provides marketing tools and content suggestions. Users are responsible for complying with all platform terms of service and applicable laws, including marketing and privacy regulations.</p>

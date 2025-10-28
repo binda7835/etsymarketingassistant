@@ -3,7 +3,7 @@ import { analyzeEtsyListings } from '../services/geminiService';
 import { GroundedContent } from '../types';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
-import AdBanner from './common/AdBanner';
+import AdSlot from './common/AdSlot';
 
 const ListingAnalyzer: React.FC = () => {
   const [idea, setIdea] = useState('Boho digital planners for Goodnotes');
@@ -82,7 +82,7 @@ const ListingAnalyzer: React.FC = () => {
                 </div>
             </div>
             )}
-            <AdBanner />
+            <AdSlot />
         </>
       )}
     </div>

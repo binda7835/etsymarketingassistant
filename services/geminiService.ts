@@ -15,14 +15,75 @@ interface GeminiResponse {
   }>;
 }
 
-const callGemini = async (
+export const callGemini = async (
   prompt: string,
   useSearch: boolean = false,
   model: string = 'gemini-2.0-flash-exp'
 ): Promise<{ text: string; sources?: any[] }> => {
   try {
+    // 1) Try a tokenless public AI endpoint first (useful for public Hugging Face Spaces)
+    // Set this at build time with VITE_PUBLIC_AI_URL (e.g. https://huggingface.co/spaces/USER/SPACE/api/predict)
+    try {
+      const publicUrl = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_PUBLIC_AI_URL) || '';
+      if (publicUrl) {
+        try {
+          const publicResp = await fetch(publicUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ inputs: prompt })
+          });
+
+          if (publicResp.ok) {
+            const pj = await publicResp.json();
+            // Hugging Face Spaces / Inference endpoints vary in shape. Try common shapes.
+            const candidate = pj?.data?.[0] ?? pj?.result ?? pj?.outputs?.[0] ?? pj;
+            if (typeof candidate === 'string') return { text: candidate, sources: [] };
+            if (candidate?.generated_text) return { text: candidate.generated_text, sources: [] };
+            if (Array.isArray(candidate) && typeof candidate[0] === 'string') return { text: candidate[0], sources: [] };
+            return { text: JSON.stringify(candidate), sources: [] };
+          } else {
+            const txt = await publicResp.text().catch(() => '');
+            console.warn('Public AI URL returned non-OK:', publicResp.status, txt);
+          }
+        } catch (e) {
+          console.warn('Public AI URL failed, will try proxy/Gemini next:', e && String(e));
+        }
+      }
+    } catch (e) {
+      console.warn('Error while checking public AI URL, continuing to next option:', e && String(e));
+    }
+
+    // 2) Try same-origin server proxy if present (server/index.js in repo). This allows use
+    // of a single Hugging Face API key kept server-side and avoids CORS/401 issues for visitors.
+    try {
+      const proxyResp = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, prompt })
+      });
+
+      if (proxyResp.ok) {
+        const pj = await proxyResp.json();
+        const hf = pj?.result ?? pj;
+        if (hf) {
+          if (Array.isArray(hf) && hf[0]?.generated_text) {
+            return { text: hf[0].generated_text, sources: [] };
+          }
+          if (hf.generated_text) return { text: hf.generated_text, sources: [] };
+          if (Array.isArray(hf) && typeof hf[0] === 'string') return { text: hf[0], sources: [] };
+          return { text: JSON.stringify(hf), sources: [] };
+        }
+      } else {
+        const txt = await proxyResp.text().catch(() => '');
+        console.warn('AI proxy returned non-OK, will fall back:', proxyResp.status, txt);
+      }
+    } catch (e) {
+      console.warn('AI proxy not available, falling back to Gemini:', e && String(e));
+    }
+
+    // 3) Fallback to Gemini (existing behavior) — kept as last resort.
     const url = `${API_BASE}/${model}:generateContent?key=${API_KEY}`;
-    
+
     const body: any = {
       contents: [{
         parts: [{ text: prompt }]
@@ -45,7 +106,7 @@ const callGemini = async (
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
       console.error('Gemini API Error:', error);
       throw new Error(error.error?.message || 'API request failed');
     }
@@ -56,10 +117,15 @@ const callGemini = async (
 
     return { text, sources };
   } catch (error) {
-    console.error('Error calling Gemini API:', error);
-    throw error;
+    console.error('Error calling Gemini/API:', error);
+    // Normalize error to include message for client-side debugging
+    const msg = error instanceof Error ? error.message : String(error);
+    throw new Error(msg || 'Unknown AI error');
   }
 };
+
+// Alias for external callers (components) to use generic prompt calls
+export const callGeminiRaw = callGemini;
 
 export const generateAudiencePersonas = async (keywords: string): Promise<string> => {
   const prompt = `You are a marketing expert specializing in the creator economy and digital products. 
@@ -80,7 +146,8 @@ Format in clean, readable Markdown with headings, bold text, and bullet points.`
     return text;
   } catch (error) {
     console.error("Error generating audience personas:", error);
-    return "An error occurred while generating personas. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating personas. ${msg}`;
   }
 };
 
@@ -104,8 +171,9 @@ Format in clean, readable Markdown.`;
     return { text, sources: sources || [] };
   } catch (error) {
     console.error("Error finding audience online:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return {
-      text: "An error occurred while searching. Please try again.",
+      text: `An error occurred while searching. ${msg}`,
       sources: [],
     };
   }
@@ -130,7 +198,8 @@ Format in clean Markdown.`;
     return text;
   } catch (error) {
     console.error("Error generating email campaign:", error);
-    return "An error occurred while generating the email. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating the email. ${msg}`;
   }
 };
 
@@ -154,7 +223,8 @@ Format in clean Markdown with clear headings for each day.`;
     return text;
   } catch (error) {
     console.error("Error generating content calendar:", error);
-    return "An error occurred while generating the calendar. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating the calendar. ${msg}`;
   }
 };
 
@@ -190,7 +260,8 @@ Return ONLY valid JSON in this format:
     return text;
   } catch (error) {
     console.error("Error optimizing listing:", error);
-    return "An error occurred while optimizing. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while optimizing. ${msg}`;
   }
 };
 
@@ -212,7 +283,8 @@ Format in clean Markdown with headings, subheadings, bold text, and bullet point
     return text;
   } catch (error) {
     console.error("Error generating strategy:", error);
-    return "An error occurred while generating the strategy. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating the strategy. ${msg}`;
   }
 };
 
@@ -234,7 +306,8 @@ Format in clean Markdown with clear headings.`;
     return text;
   } catch (error) {
     console.error("Error generating pins:", error);
-    return "An error occurred while generating pins. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating pins. ${msg}`;
   }
 };
 
@@ -257,8 +330,9 @@ Format in clean Markdown with headings, bold text, and bullet points.`;
     return { text, sources: sources || [] };
   } catch (error) {
     console.error("Error researching market:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return {
-      text: "An error occurred while researching. Please try again.",
+      text: `An error occurred while researching. ${msg}`,
       sources: [],
     };
   }
@@ -282,7 +356,8 @@ Format in clean Markdown with clear headings.`;
     return text;
   } catch (error) {
     console.error("Error generating video ideas:", error);
-    return "An error occurred while generating video ideas. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating video ideas. ${msg}`;
   }
 };
 
@@ -302,7 +377,8 @@ Format as a numbered list in clean Markdown.`;
     return text;
   } catch (error) {
     console.error("Error generating product ideas:", error);
-    return "An error occurred while generating ideas. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating ideas. ${msg}`;
   }
 };
 
@@ -326,7 +402,8 @@ Format as a single block of text, ready to copy and paste.`;
     return text;
   } catch (error) {
     console.error("Error generating response:", error);
-    return "An error occurred while generating a response. Please try again.";
+    const msg = error instanceof Error ? error.message : String(error);
+    return `An error occurred while generating a response. ${msg}`;
   }
 };
 
@@ -355,8 +432,9 @@ Format in clean Markdown with clear headings.`;
     return { text, sources: sources || [] };
   } catch (error) {
     console.error("Error analyzing listings:", error);
+    const msg = error instanceof Error ? error.message : String(error);
     return {
-      text: "An error occurred while analyzing. Please try again.",
+      text: `An error occurred while analyzing. ${msg}`,
       sources: [],
     };
   }

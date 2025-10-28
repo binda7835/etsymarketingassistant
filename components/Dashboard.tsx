@@ -1,7 +1,8 @@
 import React from 'react';
 import { AppView } from '../types';
 import Card from './common/Card';
-import AdBanner from './common/AdBanner';
+import AdSlot from './common/AdSlot';
+import AiChat from './common/AiChatPublic';
 
 interface DashboardProps {
   navigateTo: (view: AppView) => void;
@@ -90,7 +91,8 @@ const Dashboard: React.FC<DashboardProps> = ({ navigateTo }) => {
           onClick={() => navigateTo(AppView.REVIEW_RESPONDER)}
         />
       </div>
-      <AdBanner />
+  <AdSlot />
+      <AiChat />
     </div>
   );
 };

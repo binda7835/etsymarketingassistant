@@ -3,7 +3,7 @@ import { getEtsyMarketResearch } from '../services/geminiService';
 import { GroundedContent } from '../types';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
-import AdBanner from './common/AdBanner';
+import AdSlot from './common/AdSlot';
 
 const EtsyTrendSpotter: React.FC = () => {
   const [niche, setNiche] = useState('digital halloween pngs for sublimation');
@@ -83,7 +83,7 @@ const EtsyTrendSpotter: React.FC = () => {
               </div>
             </div>
           )}
-          <AdBanner />
+          <AdSlot />
         </>
       )}
     </div>

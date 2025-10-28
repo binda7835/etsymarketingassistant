@@ -20,6 +20,7 @@ import About from './components/pages/About';
 import Blog from './components/pages/Blog';
 import Contact from './components/pages/Contact';
 import Privacy from './components/pages/Privacy';
+import AiSettings from './components/common/AiSettings';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageView>(PageView.HOME);
@@ -109,6 +110,7 @@ const App: React.FC = () => {
         {renderPageView()}
       </main>
       <Footer navigateToPage={navigateToPage} />
+      <AiSettings />
     </div>
   );
 };

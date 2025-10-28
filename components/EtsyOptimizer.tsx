@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { optimizeEtsyListing } from '../services/geminiServiceBackend';
+import { optimizeEtsyListing } from '../services/geminiServiceFree';
 import { EtsyOptimizationResult } from '../types';
 import Spinner from './common/Spinner';
 

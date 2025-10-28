@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateReviewResponse } from '../services/geminiServiceBackend';
+import { generateReviewResponse } from '../services/geminiServiceFree';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateContentCalendar } from '../services/geminiServiceBackend';
+import { generateContentCalendar } from '../services/geminiServiceFree';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
 

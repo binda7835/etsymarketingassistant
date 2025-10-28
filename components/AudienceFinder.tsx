@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { findAudienceOnline } from '../services/geminiServiceFree';
+import { findAudienceOnline } from '../services/geminiService';
 import { GroundedContent } from '../types';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';

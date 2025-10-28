@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateMarketingStrategy } from '../services/geminiServiceFree';
+import { generateMarketingStrategy } from '../services/geminiService';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
 

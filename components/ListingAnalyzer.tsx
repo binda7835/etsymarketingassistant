@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { analyzeEtsyListings } from '../services/geminiServiceFree';
+import { analyzeEtsyListings } from '../services/geminiService';
 import { GroundedContent } from '../types';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';

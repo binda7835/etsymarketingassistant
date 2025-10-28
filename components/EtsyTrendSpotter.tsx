@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getEtsyMarketResearch } from '../services/geminiServiceFree';
+import { getEtsyMarketResearch } from '../services/geminiService';
 import { GroundedContent } from '../types';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';

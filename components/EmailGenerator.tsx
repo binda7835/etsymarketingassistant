@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateEmailCampaign } from '../services/geminiServiceFree';
+import { generateEmailCampaign } from '../services/geminiService';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
 

@@ -1,45 +1,14 @@
+import { GoogleGenAI, Type } from "@google/genai";
 import { GroundedContent, EtsyOptimizationResult } from "../types";
 
-// Using Hugging Face Inference API (100% FREE, no API key needed)
-const HF_API_URL = "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1";
-
-const callHuggingFace = async (prompt: string): Promise<string> => {
-  try {
-    const response = await fetch(HF_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 2000,
-          temperature: 0.7,
-          return_full_text: false
-        }
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    
-    if (Array.isArray(data) && data[0]?.generated_text) {
-      return data[0].generated_text;
-    }
-    
-    if (data.error) {
-      throw new Error(data.error);
-    }
-    
-    return JSON.stringify(data);
-  } catch (error) {
-    console.error("Error calling Hugging Face API:", error);
-    throw error;
-  }
+// Using Google Gemini AI
+// Note: API key is embedded for demo purposes. For production, use environment variables.
+const getAI = () => {
+  const apiKey = 'AIzaSyCItudMofG38Z1KmQ2X0QXGynNvOPb4kBY'; // Your API key
+  return new GoogleGenAI({ apiKey });
 };
+
+const model = "gemini-2.5-flash";
 
 export const generateAudiencePersonas = async (keywords: string): Promise<string> => {
   const prompt = `

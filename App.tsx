@@ -20,10 +20,12 @@ import About from './components/pages/About';
 import Blog from './components/pages/Blog';
 import Contact from './components/pages/Contact';
 import Privacy from './components/pages/Privacy';
+import { ApiKeyManager } from './components/ApiKeyManager';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageView>(PageView.HOME);
   const [currentTool, setCurrentTool] = useState<AppView>(AppView.DASHBOARD);
+  const [apiKeySet, setApiKeySet] = useState(false);
 
   const navigateToPage = useCallback((page: PageView) => {
     setCurrentPage(page);
@@ -35,6 +37,10 @@ const App: React.FC = () => {
     setCurrentPage(PageView.TOOLS);
     setCurrentTool(tool);
     window.scrollTo(0, 0);
+  }, []);
+
+  const handleApiKeySet = useCallback((key: string) => {
+    setApiKeySet(!!key);
   }, []);
 
   const renderToolView = () => {
@@ -84,6 +90,7 @@ const App: React.FC = () => {
       case PageView.TOOLS:
         return (
           <>
+            <ApiKeyManager onApiKeySet={handleApiKeySet} />
             {currentTool !== AppView.DASHBOARD && (
               <button
                 onClick={() => navigateToTool(AppView.DASHBOARD)}

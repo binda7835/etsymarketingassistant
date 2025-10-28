@@ -1,7 +1,14 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { GroundedContent, EtsyOptimizationResult } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+const getAI = () => {
+  const apiKey = localStorage.getItem('gemini_api_key') || '';
+  if (!apiKey) {
+    throw new Error('API key not found. Please set your API key in the settings.');
+  }
+  return new GoogleGenAI({ apiKey });
+};
+
 const model = "gemini-2.5-flash";
 
 export const generateAudiencePersonas = async (keywords: string): Promise<string> => {
@@ -20,7 +27,7 @@ export const generateAudiencePersonas = async (keywords: string): Promise<string
     Format the output in clean, readable Markdown. Use headings, bold text, and bullet points to structure the information for each persona.
   `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: model,
       contents: prompt
     });
@@ -49,7 +56,7 @@ export const findAudienceOnline = async (keywords: string): Promise<GroundedCont
       Format the output in clean, readable Markdown.
     `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: model,
       contents: prompt,
       config: {
@@ -96,7 +103,7 @@ export const generateEmailCampaign = async (persona: string, etsyUrl: string): P
     Format the output in clean, readable Markdown.
   `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: model,
       contents: prompt
     });
@@ -128,7 +135,7 @@ export const generateContentCalendar = async (persona: string): Promise<string> 
     Structure the output in clean, readable Markdown. Use a clear heading for each day of the week.
   `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: "gemini-2.5-pro",
       contents: prompt
     });
@@ -161,7 +168,7 @@ export const optimizeEtsyListing = async (description: string): Promise<EtsyOpti
     Return the result as a JSON object.
   `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: "gemini-2.5-pro",
       contents: prompt,
       config: {
@@ -226,7 +233,7 @@ export const generateMarketingStrategy = async (productInfo: string): Promise<st
     Format the output in clean, readable Markdown. Use headings, subheadings, bold text, and bullet points to make the strategy easy to follow. Start with a strong opening statement about the importance of authentic marketing.
   `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: "gemini-2.5-pro", // Using a more powerful model for strategic content
       contents: prompt
     });
@@ -254,7 +261,7 @@ export const generatePinterestPins = async (productInfo: string): Promise<string
       Format the output in clean, readable Markdown. Use a clear heading for each Pin idea.
     `;
     try {
-      const response = await ai.models.generateContent({
+      const response = await getAI().models.generateContent({
         model: "gemini-2.5-pro",
         contents: prompt
       });
@@ -281,7 +288,7 @@ export const getEtsyMarketResearch = async (niche: string): Promise<GroundedCont
         Format the output in clean, readable Markdown. Use headings, bold text, and bullet points.
       `;
     try {
-      const response = await ai.models.generateContent({
+      const response = await getAI().models.generateContent({
         model: "gemini-2.5-pro",
         contents: prompt,
         config: {
@@ -322,7 +329,7 @@ export const generateViralVideoIdeas = async (productInfo: string): Promise<stri
       Format the output in clean, readable Markdown. Use a clear heading for each video idea.
     `;
     try {
-      const response = await ai.models.generateContent({
+      const response = await getAI().models.generateContent({
         model: "gemini-2.5-pro",
         contents: prompt
       });
@@ -349,7 +356,7 @@ export const generateNewProductIdeas = async (theme: string): Promise<string> =>
       Format the output as a numbered list in clean, readable Markdown.
     `;
     try {
-      const response = await ai.models.generateContent({
+      const response = await getAI().models.generateContent({
         model: "gemini-2.5-pro",
         contents: prompt
       });
@@ -377,7 +384,7 @@ export const generateReviewResponse = async (review: string): Promise<string> =>
       Format the output as a single block of text, ready to be copied and pasted.
     `;
     try {
-      const response = await ai.models.generateContent({
+      const response = await getAI().models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt
       });
@@ -411,7 +418,7 @@ export const analyzeEtsyListings = async (idea: string): Promise<GroundedContent
     Format the entire output in clean, readable Markdown. Use clear headings for each part and for each section of the analysis.
   `;
   try {
-    const response = await ai.models.generateContent({
+    const response = await getAI().models.generateContent({
       model: "gemini-2.5-pro",
       contents: prompt,
       config: {

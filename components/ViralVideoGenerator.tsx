@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateViralVideoIdeas } from '../services/geminiService';
+import { generateViralVideoIdeas } from '../services/geminiServiceBackend';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
 

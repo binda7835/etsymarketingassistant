@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generatePinterestPins } from '../services/geminiService';
+import { generatePinterestPins } from '../services/geminiServiceBackend';
 import Spinner from './common/Spinner';
 import GeneratedContent from './common/GeneratedContent';
 

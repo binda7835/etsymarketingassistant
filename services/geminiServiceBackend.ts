@@ -11,6 +11,9 @@ const callGeminiAPI = async (
   responseType: 'text' | 'json' = 'text',
   responseSchema: any = null
 ) => {
+  console.log('Calling API:', API_URL);
+  console.log('Request:', { prompt: prompt.substring(0, 100) + '...', model, useSearch });
+  
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
@@ -25,12 +28,17 @@ const callGeminiAPI = async (
     }),
   });
 
+  console.log('Response status:', response.status);
+  
   if (!response.ok) {
-    const error = await response.json();
+    const error = await response.json().catch(() => ({ error: 'Unknown error' }));
+    console.error('API Error:', error);
     throw new Error(error.details || error.error || 'API request failed');
   }
 
-  return response.json();
+  const result = await response.json();
+  console.log('API Success:', result);
+  return result;
 };
 
 export const generateAudiencePersonas = async (keywords: string): Promise<string> => {

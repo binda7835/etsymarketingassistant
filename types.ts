@@ -14,6 +14,15 @@ export enum AppView {
   LISTING_ANALYZER,
 }
 
+export enum PageView {
+  HOME,
+  ABOUT,
+  TOOLS,
+  BLOG,
+  CONTACT,
+  PRIVACY,
+}
+
 export interface GroundedContent {
   text: string;
   sources: any[];

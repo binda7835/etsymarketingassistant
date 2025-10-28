@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { analyzeEtsyListings } from '../services/geminiService';
 import { GroundedContent } from '../types';
@@ -29,7 +28,7 @@ const ListingAnalyzer: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Etsy Listing Analyzer</h2>
+      <h2 className="text-3xl font-bold text-white mb-2">Analyze an Etsy Niche</h2>
       <p className="text-gray-400 mb-6">Validate your product ideas with a competitive analysis grounded in real-time Google Search data to find opportunities in your niche.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
@@ -47,14 +46,14 @@ const ListingAnalyzer: React.FC = () => {
         </div>
         <div className="bg-yellow-900/50 border border-yellow-700 text-yellow-300 text-xs rounded p-3 mb-4">
           <i className="fas fa-exclamation-triangle mr-2"></i>
-          <strong>Disclaimer:</strong> This tool generates a realistic **simulation** of Etsy listings for strategic analysis, informed by **live Google Search data** to ensure insights are current.
+          <strong>Disclaimer:</strong> This tool creates a realistic **simulation** of Etsy listings for strategic analysis, informed by **live Google Search data** to ensure insights are current.
         </div>
         <button
           type="submit"
           disabled={isLoading || !idea}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Analyzing...' : <><i className="fas fa-chart-line"></i> Analyze Niche</>}
+          {isLoading ? 'Analyzing...' : <><i className="fas fa-chart-line"></i> Analyze a Niche</>}
         </button>
       </form>
 

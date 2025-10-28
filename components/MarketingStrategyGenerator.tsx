@@ -18,7 +18,7 @@ const MarketingStrategyGenerator: React.FC = () => {
       setStrategy(result);
     } catch (error) {
       console.error(error);
-      setStrategy('Failed to generate a marketing strategy. Please try again.');
+      setStrategy('Failed to create a marketing plan. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -26,8 +26,8 @@ const MarketingStrategyGenerator: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Generate Your Marketing Strategy</h2>
-      <p className="text-gray-400 mb-6">Describe your product, and the AI will generate a 30-day plan to help you build a community and drive sales on Instagram, Reddit, and via email.</p>
+      <h2 className="text-3xl font-bold text-white mb-2">Create Your Marketing Plan</h2>
+      <p className="text-gray-400 mb-6">Describe your product, and this assistant will outline a 30-day plan to help you build a community and drive sales on Instagram, Reddit, and via email.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <div className="mb-4">
@@ -52,7 +52,7 @@ const MarketingStrategyGenerator: React.FC = () => {
           disabled={isLoading || !productInfo}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Generating Plan...' : <><i className="fas fa-bullseye"></i> Create My Strategy</>}
+          {isLoading ? 'Creating Plan...' : <><i className="fas fa-bullseye"></i> Create My Plan</>}
         </button>
       </form>
 

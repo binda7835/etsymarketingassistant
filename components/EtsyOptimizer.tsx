@@ -42,8 +42,8 @@ const EtsyOptimizer: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Supercharge Your Etsy Listing</h2>
-      <p className="text-gray-400 mb-6">Generate two distinct, optimized versions of your listing. A/B test them on Etsy to discover which title and description converts more sales!</p>
+      <h2 className="text-3xl font-bold text-white mb-2">Create an A/B Test for a Listing</h2>
+      <p className="text-gray-400 mb-6">Develop two distinct, optimized versions of your listing. A/B test them on Etsy to discover which title and description converts more sales!</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <div className="mb-4">
@@ -64,7 +64,7 @@ const EtsyOptimizer: React.FC = () => {
           disabled={isLoading || !description}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Generating Versions...' : <><i className="fas fa-rocket"></i> A/B Test My Listing</>}
+          {isLoading ? 'Creating...' : <><i className="fas fa-rocket"></i> Create A/B Test</>}
         </button>
       </form>
 

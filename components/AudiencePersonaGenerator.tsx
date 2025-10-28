@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { generateAudiencePersonas } from '../services/geminiService';
 import Spinner from './common/Spinner';
@@ -19,7 +18,7 @@ const AudiencePersonaGenerator: React.FC = () => {
       setPersonas(result);
     } catch (error) {
       console.error(error);
-      setPersonas('Failed to generate personas. Please try again.');
+      setPersonas('Failed to create personas. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -27,8 +26,8 @@ const AudiencePersonaGenerator: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Define Your Audience</h2>
-      <p className="text-gray-400 mb-6">Enter keywords that describe your ideal customers to generate detailed personas.</p>
+      <h2 className="text-3xl font-bold text-white mb-2">Create Audience Personas</h2>
+      <p className="text-gray-400 mb-6">Enter keywords that describe your ideal customers to develop detailed personas.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <div className="mb-4">
@@ -49,7 +48,7 @@ const AudiencePersonaGenerator: React.FC = () => {
           disabled={isLoading}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Generating...' : <><i className="fas fa-users"></i> Generate Personas</>}
+          {isLoading ? 'Creating...' : <><i className="fas fa-users"></i> Create Personas</>}
         </button>
       </form>
 

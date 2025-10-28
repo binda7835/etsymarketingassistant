@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { AppView } from './types';
+import { AppView, PageView } from './types';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import AudiencePersonaGenerator from './components/AudiencePersonaGenerator';
@@ -15,17 +15,30 @@ import ViralVideoGenerator from './components/ViralVideoGenerator';
 import ProductIdeaGenerator from './components/ProductIdeaGenerator';
 import ReviewResponder from './components/ReviewResponder';
 import ListingAnalyzer from './components/ListingAnalyzer';
+import Home from './components/pages/Home';
+import About from './components/pages/About';
+import Blog from './components/pages/Blog';
+import Contact from './components/pages/Contact';
+import Privacy from './components/pages/Privacy';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
+  const [currentPage, setCurrentPage] = useState<PageView>(PageView.HOME);
+  const [currentTool, setCurrentTool] = useState<AppView>(AppView.DASHBOARD);
 
-  const navigateTo = useCallback((view: AppView) => {
-    setCurrentView(view);
+  const navigateToPage = useCallback((page: PageView) => {
+    setCurrentPage(page);
+    setCurrentTool(AppView.DASHBOARD); // Reset tool view when changing pages
     window.scrollTo(0, 0);
   }, []);
 
-  const renderView = () => {
-    switch (currentView) {
+  const navigateToTool = useCallback((tool: AppView) => {
+    setCurrentPage(PageView.TOOLS);
+    setCurrentTool(tool);
+    window.scrollTo(0, 0);
+  }, []);
+
+  const renderToolView = () => {
+    switch (currentTool) {
       case AppView.AUDIENCE:
         return <AudiencePersonaGenerator />;
       case AppView.EMAIL:
@@ -52,26 +65,50 @@ const App: React.FC = () => {
         return <ListingAnalyzer />;
       case AppView.DASHBOARD:
       default:
-        return <Dashboard navigateTo={navigateTo} />;
+        return <Dashboard navigateTo={navigateToTool} />;
     }
   };
 
+  const renderPageView = () => {
+    switch (currentPage) {
+      case PageView.HOME:
+        return <Home navigateToPage={navigateToPage} />;
+      case PageView.ABOUT:
+        return <About />;
+      case PageView.BLOG:
+        return <Blog />;
+      case PageView.CONTACT:
+        return <Contact />;
+      case PageView.PRIVACY:
+        return <Privacy />;
+      case PageView.TOOLS:
+        return (
+          <>
+            {currentTool !== AppView.DASHBOARD && (
+              <button
+                onClick={() => navigateToTool(AppView.DASHBOARD)}
+                className="mb-8 flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors duration-300"
+              >
+                <i className="fas fa-arrow-left"></i>
+                Back to All Tools
+              </button>
+            )}
+            {renderToolView()}
+          </>
+        );
+      default:
+        return <Home navigateToPage={navigateToPage}/>;
+    }
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-900 font-sans flex flex-col">
-      <Header onHomeClick={() => navigateTo(AppView.DASHBOARD)} />
+      <Header navigateToPage={navigateToPage} currentPage={currentPage} />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
-        {currentView !== AppView.DASHBOARD && (
-          <button
-            onClick={() => navigateTo(AppView.DASHBOARD)}
-            className="mb-8 flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors duration-300"
-          >
-            <i className="fas fa-arrow-left"></i>
-            Back to Dashboard
-          </button>
-        )}
-        {renderView()}
+        {renderPageView()}
       </main>
-      <Footer />
+      <Footer navigateToPage={navigateToPage} />
     </div>
   );
 };

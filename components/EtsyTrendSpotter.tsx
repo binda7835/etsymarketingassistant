@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { getEtsyMarketResearch } from '../services/geminiService';
 import { GroundedContent } from '../types';
@@ -29,8 +28,8 @@ const EtsyTrendSpotter: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Etsy Trend Spotter</h2>
-      <p className="text-gray-400 mb-6">Enter a product niche to get an AI-powered market analysis. Discover current trends, new product ideas, pricing insights, and winning keywords, backed by Google Search.</p>
+      <h2 className="text-3xl font-bold text-white mb-2">Research Niche Trends</h2>
+      <p className="text-gray-400 mb-6">Enter a product niche to get a market analysis. Discover current trends, new product ideas, pricing insights, and winning keywords, backed by Google Search.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <div className="mb-4">
@@ -55,7 +54,7 @@ const EtsyTrendSpotter: React.FC = () => {
           disabled={isLoading}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Researching...' : <><i className="fas fa-search-dollar"></i> Analyze Trends</>}
+          {isLoading ? 'Researching...' : <><i className="fas fa-search-dollar"></i> Research Niche Trends</>}
         </button>
       </form>
 

@@ -18,7 +18,7 @@ const ViralVideoGenerator: React.FC = () => {
       setIdeas(result);
     } catch (error) {
       console.error(error);
-      setIdeas('Failed to generate video ideas. Please try again.');
+      setIdeas('Failed to create video ideas. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -26,7 +26,7 @@ const ViralVideoGenerator: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Generate Viral Video Ideas</h2>
+      <h2 className="text-3xl font-bold text-white mb-2">Create Viral Video Ideas</h2>
       <p className="text-gray-400 mb-6">Create short-form video ideas for TikTok & Instagram Reels that will stop the scroll and grab attention.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
@@ -48,7 +48,7 @@ const ViralVideoGenerator: React.FC = () => {
           disabled={isLoading || !productInfo}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Generating...' : <><i className="fas fa-video"></i> Get Video Ideas</>}
+          {isLoading ? 'Creating...' : <><i className="fas fa-video"></i> Create Video Ideas</>}
         </button>
       </form>
 

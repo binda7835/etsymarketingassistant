@@ -27,8 +27,8 @@ const AudienceFinder: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Find Your Audience Online</h2>
-      <p className="text-gray-400 mb-6">Discover Instagram accounts, Reddit communities, and blogs where your target customers are active. This tool uses Google Search to find relevant places to engage with your audience.</p>
+      <h2 className="text-3xl font-bold text-white mb-2">Discover Your Audience Online</h2>
+      <p className="text-gray-400 mb-6">Find Instagram accounts, Reddit communities, and blogs where your target customers are active. This tool uses Google Search to find relevant places to engage with your audience.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <div className="mb-4">
@@ -53,7 +53,7 @@ const AudienceFinder: React.FC = () => {
           disabled={isLoading}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Searching...' : <><i className="fas fa-search-location"></i> Find Communities</>}
+          {isLoading ? 'Searching...' : <><i className="fas fa-search-location"></i> Discover Communities</>}
         </button>
       </form>
 

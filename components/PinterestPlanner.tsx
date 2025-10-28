@@ -18,7 +18,7 @@ const PinterestPlanner: React.FC = () => {
       setPins(result);
     } catch (error) {
       console.error(error);
-      setPins('Failed to generate Pinterest ideas. Please try again.');
+      setPins('Failed to plan Pinterest content. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -26,8 +26,8 @@ const PinterestPlanner: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-2">Pinterest Power-Planner</h2>
-      <p className="text-gray-400 mb-6">Describe your product to generate a list of strategic Pin ideas, complete with catchy titles, descriptions, and visual concepts to drive traffic from Pinterest to your store.</p>
+      <h2 className="text-3xl font-bold text-white mb-2">Plan Your Pinterest Content</h2>
+      <p className="text-gray-400 mb-6">Describe your product to outline a list of strategic Pin ideas, complete with catchy titles, descriptions, and visual concepts to drive traffic from Pinterest to your store.</p>
 
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <div className="mb-4">
@@ -48,7 +48,7 @@ const PinterestPlanner: React.FC = () => {
           disabled={isLoading || !productInfo}
           className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Generating Pins...' : <><i className="fab fa-pinterest"></i> Generate Pin Ideas</>}
+          {isLoading ? 'Planning...' : <><i className="fab fa-pinterest"></i> Plan Pinterest Content</>}
         </button>
       </form>
 

@@ -40,6 +40,8 @@ jobs:
           VITE_PUBLIC_AI_URL: ${{ secrets.PUBLIC_AI_URL }}
           # Optional: if you host a proxy elsewhere, you can pass a URL the app can call
           VITE_PROXY_URL: ${{ secrets.PROXY_URL }}
+          # Disable Gemini fallback by default so public visitors don't hit suspended/limited keys
+          VITE_ALLOW_GEMINI_FALLBACK: "false"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

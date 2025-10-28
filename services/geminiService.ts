@@ -21,10 +21,12 @@ export const callGemini = async (
   model: string = 'gemini-2.0-flash-exp'
 ): Promise<{ text: string; sources?: any[] }> => {
   try {
-    // 1) Try a tokenless public AI endpoint first (useful for public Hugging Face Spaces)
-    // Set this at build time with VITE_PUBLIC_AI_URL (e.g. https://huggingface.co/spaces/USER/SPACE/api/predict)
+  // 1) Try a tokenless public AI endpoint first (useful for public Hugging Face Spaces)
+  // You can set this at build time with VITE_PUBLIC_AI_URL or at runtime by saving
+  // a value in localStorage under key PUBLIC_AI_URL (no rebuild needed for runtime override).
     try {
-      const publicUrl = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_PUBLIC_AI_URL) || '';
+  const runtimeUrl = (typeof window !== 'undefined' && window.localStorage?.getItem('PUBLIC_AI_URL')) || '';
+  const publicUrl = runtimeUrl || ((typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_PUBLIC_AI_URL) || '');
       if (publicUrl) {
         try {
           const publicResp = await fetch(publicUrl, {
@@ -81,7 +83,14 @@ export const callGemini = async (
       console.warn('AI proxy not available, falling back to Gemini:', e && String(e));
     }
 
-    // 3) Fallback to Gemini (existing behavior) — kept as last resort.
+    // 3) Fallback handling. By default we avoid calling Gemini if no public/proxy is configured,
+    // because public visitors would hit rate limits or suspended keys.
+    const allowGeminiFallback = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_ALLOW_GEMINI_FALLBACK) === 'true';
+    if (!allowGeminiFallback) {
+      throw new Error('AI backend not configured. Please set a public AI URL (PUBLIC_AI_URL in localStorage or VITE_PUBLIC_AI_URL at build) or deploy the proxy.');
+    }
+
+    // Optional Gemini fallback (only when explicitly allowed)
     const url = `${API_BASE}/${model}:generateContent?key=${API_KEY}`;
 
     const body: any = {

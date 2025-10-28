@@ -1,11 +1,12 @@
 import { GroundedContent, EtsyOptimizationResult } from "../types";
 
-// Using Hugging Face Inference API (100% FREE, no API key needed)
+// Using a CORS proxy for Hugging Face to avoid CORS issues
+const CORS_PROXY = "https://corsproxy.io/?";
 const HF_API_URL = "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1";
 
 const callHuggingFace = async (prompt: string): Promise<string> => {
   try {
-    const response = await fetch(HF_API_URL, {
+    const response = await fetch(CORS_PROXY + encodeURIComponent(HF_API_URL), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,6 +22,8 @@ const callHuggingFace = async (prompt: string): Promise<string> => {
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("API Response:", errorText);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -33,8 +36,9 @@ const callHuggingFace = async (prompt: string): Promise<string> => {
     if (data.error) {
       // Model is loading, return helpful message
       if (data.error.includes('loading')) {
-        return "The AI model is loading. Please try again in a few seconds...";
+        return "⏳ The AI model is warming up. Please try again in 10-20 seconds...";
       }
+      console.error("API Error:", data.error);
       throw new Error(data.error);
     }
     
